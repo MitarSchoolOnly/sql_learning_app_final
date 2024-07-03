@@ -36,6 +36,9 @@ class RegisterPage extends StatelessWidget {
         SnackBar(content: Text(e.toString())), // Provide specific error message
       );
     }
+    final dbHelper = DatabaseHelper.instance;
+    assert(await dbHelper.getUser(username) != null,
+        "User wasn’t actually registered!");
   }
 
   @override

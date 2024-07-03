@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart'; // Add this import
+import 'package:sql_learning_app_final/db_helper.dart';
 
 import 'main.dart';
 import 'register.dart';
@@ -30,13 +31,14 @@ class LoginPage extends StatelessWidget {
   }
 
   void _login(BuildContext context) async {
+    final dbHelper = DatabaseHelper.instance;
     String username = _usernameController.text;
     String password = _passwordController.text;
-    final users = await _loadUsers();
-    print(users);
-    if (users.containsKey(username) &&
-        users[username]['password'] == password) {
-      int userLevel = users[username]['level'];
+    final dbUser = await dbHelper.getUser(username);
+    final user = dbUser?.values.first;
+    if (user != null) {
+      int userLevel = user.level;
+      print(userLevel);
       Navigator.push(
         context,
         MaterialPageRoute(
